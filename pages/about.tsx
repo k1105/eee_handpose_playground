@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
+const About: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,18 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {(() => {
-          const elem = [];
-          for (let i = 0; i < 10; i++) {
-            elem.push(<div>hoge</div>);
-          }
-          return elem;
-        })()}
-        <div>
-          <button>
-            <Link href="/create">Create New Finger</Link>
-          </button>
-        </div>
+        <div>This is About Page.</div>
       </main>
 
       <footer className={styles.footer}>
@@ -44,4 +32,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default About;
