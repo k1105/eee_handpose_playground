@@ -9,8 +9,8 @@ import Webcam from "react-webcam";
 import { PixelInput } from "@tensorflow-models/hand-pose-detection/dist/shared/calculators/interfaces/common_interfaces";
 import dynamic from "next/dynamic";
 
-const DisplayMarkedUpFingers = dynamic(
-  () => import("../components/displayMarkedUpFingers"),
+const CreateNetworkedFingers = dynamic(
+  () => import("../components/createNetworkedFingers"),
   {
     ssr: false, // <- ここで ssr を無効にするオプションを渡す
   }
@@ -96,7 +96,7 @@ const Create: NextPage = () => {
 
       <main>
         {/* //optional sketch */}
-        {ready && <DisplayMarkedUpFingers predictionsRef={predictionsRef} />}
+        {ready && <CreateNetworkedFingers predictionsRef={predictionsRef} />}
         <div
           style={{
             position: "absolute",

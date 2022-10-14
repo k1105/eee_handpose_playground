@@ -4,11 +4,11 @@ import { Skin } from "./SkinClass";
 
 export class NetworkedFinger extends Finger {
   id: number;
-  parent: number;
+  parent: number | null;
   followRotate: boolean;
   constructor(
     id: number,
-    parent: number,
+    parent: number | null,
     followRotate: boolean,
     position: { x: number; y: number },
     rotation: number,
@@ -24,7 +24,7 @@ export class NetworkedFinger extends Finger {
   update(parent: Finger | null, key: { x: number; y: number }[]) {
     if (parent !== null) {
       this.bottom_position = parent.tip_position;
-      this.bottom_angle = parent.bottom_angle;
+      this.bottom_angle = parent.bottom_angle + this.offset_angle;
       if (this.followRotate) {
         this.bottom_angle += parent.vector_angle;
       }
