@@ -22,9 +22,13 @@ const Home: NextPage = () => {
           return elem;
         })()}
         <div>
-          <button>
-            <Link href="/create">Create New Finger</Link>
-          </button>
+          <ul>
+            <li>
+              <Link href="/work/create_networked_fingers">
+                Create New Finger
+              </Link>
+            </li>
+          </ul>
         </div>
       </main>
 

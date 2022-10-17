@@ -1,3 +1,5 @@
+import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
+
 export const calcAverageKeypoints = (keyarr: { x: number; y: number }[][]) => {
   const keys = [];
   if (keyarr.length > 0) {
@@ -11,7 +13,10 @@ export const calcAverageKeypoints = (keyarr: { x: number; y: number }[][]) => {
         val.x += keyarr[j][i].x * weight;
         val.y += keyarr[j][i].y * weight;
       }
-      keys.push({ x: val.x / totalWeight, y: val.y / totalWeight });
+      keys.push({
+        x: val.x / totalWeight,
+        y: val.y / totalWeight,
+      } as handPoseDetection.Keypoint);
     }
 
     return keys;

@@ -1,7 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { useCallback, useRef, useState, useEffect } from "react";
 import "@tensorflow/tfjs";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
@@ -9,12 +7,9 @@ import Webcam from "react-webcam";
 import { PixelInput } from "@tensorflow-models/hand-pose-detection/dist/shared/calculators/interfaces/common_interfaces";
 import dynamic from "next/dynamic";
 
-const CreateNetworkedFingers = dynamic(
-  () => import("../components/createNetworkedFingers"),
-  {
-    ssr: false, // <- ここで ssr を無効にするオプションを渡す
-  }
-);
+const Sketch = dynamic(() => import("../../sketches/createNetworkedFingers"), {
+  ssr: false, // <- ここで ssr を無効にするオプションを渡す
+});
 
 const Create: NextPage = () => {
   const webcamRef = useRef<null | Webcam>(null);
@@ -96,7 +91,7 @@ const Create: NextPage = () => {
 
       <main>
         {/* //optional sketch */}
-        {ready && <CreateNetworkedFingers predictionsRef={predictionsRef} />}
+        {ready && <Sketch predictionsRef={predictionsRef} />}
         <div
           style={{
             position: "absolute",
@@ -126,19 +121,6 @@ const Create: NextPage = () => {
           }}
         ></div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   );
 };

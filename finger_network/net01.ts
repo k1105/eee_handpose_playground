@@ -1,7 +1,7 @@
 import { NetworkedFinger } from "../lib/NetworkedFingerClass";
-import { Skin } from "../lib/SkinClass";
-
-export const net01 = (skin: Skin) => {
+import { skin01 } from "../finger_skin/skin01";
+export const net01 = () => {
+  const skin = skin01();
   const data: NetworkedFinger[] = [];
   for (let i = 0; i < 5; i++) {
     data.push(
