@@ -1,10 +1,22 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
+import { fetchSketchSlugs } from "../lib/fetchSketchSlugs";
 
-const Home: NextPage = () => {
+export async function getStaticProps() {
+  const data = await fetchSketchSlugs();
+  const slugs = data.map((slug) => {
+    return slug.replace(/\.tsx$/, "");
+  });
+  return {
+    props: {
+      ...slugs,
+    },
+  };
+}
+
+const Home = (slugs: string[]) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,22 +26,19 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {(() => {
-          const elem = [];
-          for (let i = 0; i < 10; i++) {
-            elem.push(<div>hoge</div>);
-          }
-          return elem;
-        })()}
-        <div>
-          <ul>
-            <li>
-              <Link href="/work/create_networked_fingers">
-                Create New Finger
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <ul>
+          {(() => {
+            const elem = [];
+            for (let id in slugs) {
+              elem.push(
+                <li id={slugs[id]}>
+                  <Link href={`/work/${slugs[id]}`}>{slugs[id]}</Link>
+                </li>
+              );
+            }
+            return elem;
+          })()}
+        </ul>
       </main>
 
       <footer className={styles.footer}>

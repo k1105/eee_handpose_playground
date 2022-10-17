@@ -2,8 +2,7 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { NetworkedFinger } from "../lib/NetworkedFingerClass";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import { MutableRefObject } from "react";
-import { isClose } from "../lib/isClose";
-import { skin01 } from "../finger_skin/skin01";
+import { net03 } from "../finger_network/net03";
 import { drawNetworkedFingers } from "../lib/drawNetworkedFingers";
 import { updatePoses } from "../lib/updatePoses";
 
@@ -11,17 +10,15 @@ type Props = {
   predictionsRef: MutableRefObject<null | handPoseDetection.Hand[]>;
 };
 
-const finger_names = ["thumb", "index", "middle", "ring", "pinky"];
-
-const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
+const fractalFingers = ({ predictionsRef }: Props): JSX.Element => {
+  let mouseClickedLastCall = 0;
   let keyflames: [
     handPoseDetection.Keypoint[][],
     handPoseDetection.Keypoint[][]
   ] = [[], []];
-  const skin = skin01();
-  const fingers: NetworkedFinger[] = [
-    new NetworkedFinger(0, null, false, { x: 500, y: 500 }, 0, "thumb", skin),
-  ];
+  let hands = [];
+  const positions = [];
+  const data: NetworkedFinger[] = net03();
 
   function sketch(p5: P5CanvasInstance) {
     p5.setup = () => {
@@ -32,8 +29,7 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
     };
 
     p5.draw = () => {
-      let hands = [];
-      p5.background(57, 127, 173);
+      p5.background(100);
       p5.push();
       if (predictionsRef.current) {
         try {
@@ -43,28 +39,16 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
             >,
             poses: keyflames,
           });
-
           const key = hands[0];
-          drawNetworkedFingers({ p5: p5, pose: key, networkedfinger: fingers });
+          drawNetworkedFingers({ p5: p5, pose: key, networkedfinger: data });
         } catch (e) {}
       }
+      p5.pop();
     };
 
     p5.mouseClicked = () => {
-      for (const finger of fingers) {
-        if (isClose(finger.tip_position, { x: p5.mouseX, y: p5.mouseY }, 10)) {
-          fingers.push(
-            new NetworkedFinger(
-              fingers.length,
-              finger.id,
-              true,
-              { x: 0, y: 0 },
-              Math.random() * Math.PI * 2,
-              finger_names[Math.floor(Math.random() * 5)],
-              skin
-            )
-          );
-        }
+      if (new Date().getTime() - mouseClickedLastCall > 1) {
+        positions.push({ x: p5.mouseX, y: p5.mouseY });
       }
 
       return false;
@@ -73,4 +57,4 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
   return <ReactP5Wrapper sketch={sketch} />;
 };
 
-export default CreateNetworkedFingers;
+export default fractalFingers;

@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Link from "next/link";
 import { fetchSketchSlugs } from "../../lib/fetchSketchSlugs";
 import { useCallback, useRef, useState, useEffect } from "react";
 import "@tensorflow/tfjs";
@@ -104,6 +105,11 @@ export default function Work({ slug }: PostProps) {
       </Head>
 
       <main>
+        <ul style={{ position: "absolute" }}>
+          <li>
+            <Link href="/">Top</Link>
+          </li>
+        </ul>
         {/* //optional sketch */}
         {ready && <Sketch predictionsRef={predictionsRef} />}
         <div
