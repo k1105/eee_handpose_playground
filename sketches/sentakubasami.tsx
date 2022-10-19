@@ -2,37 +2,49 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { NetworkedFinger } from "../lib/NetworkedFingerClass";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import { MutableRefObject } from "react";
-import { net03 } from "../finger_network/net03";
 import { drawNetworkedFingers } from "../lib/drawNetworkedFingers";
 import { updatePoses } from "../lib/updatePoses";
-import { drawTreeDiagram } from "../lib/drawTreeDiagram";
-import { composeTreeNode } from "../lib/composeTreeDiagram";
+import { sentakubasamiSkin } from "../finger_skin/sentakubasamiSkin";
 
 type Props = {
   predictionsRef: MutableRefObject<null | handPoseDetection.Hand[]>;
 };
 
-const fractalFingers = ({ predictionsRef }: Props): JSX.Element => {
-  let mouseClickedLastCall = 0;
+const sentakubasami = ({ predictionsRef }: Props): JSX.Element => {
   let keyflames: [
     handPoseDetection.Keypoint[][],
     handPoseDetection.Keypoint[][]
   ] = [[], []];
-  let hands = [];
-  const positions = [];
-  const data: NetworkedFinger[] = net03();
-  const treeNodes = composeTreeNode(data);
+  let img;
+  let skin = sentakubasamiSkin(img);
+  const fingers: NetworkedFinger[] = [
+    new NetworkedFinger(
+      0,
+      null,
+      false,
+      { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+      0,
+      "index",
+      skin
+    ),
+  ];
 
   function sketch(p5: P5CanvasInstance) {
+    p5.preload = () => {
+      img = p5.loadImage("/img/sentaku_basami.png");
+      skin = sentakubasamiSkin(img);
+    };
+
     p5.setup = () => {
       p5.createCanvas(window.innerWidth, window.innerHeight);
-
+      p5.background(160);
       p5.stroke(220);
       p5.strokeWeight(3);
     };
 
     p5.draw = () => {
-      p5.background(100);
+      let hands = [];
+      p5.background(160);
       p5.push();
       if (predictionsRef.current) {
         try {
@@ -43,22 +55,27 @@ const fractalFingers = ({ predictionsRef }: Props): JSX.Element => {
             poses: keyflames,
           });
           const key = hands[0];
-          drawTreeDiagram({ p5: p5, treeNodes: treeNodes });
-          drawNetworkedFingers({ p5: p5, pose: key, networkedfinger: data });
+          drawNetworkedFingers({ p5: p5, pose: key, networkedfinger: fingers });
         } catch (e) {}
       }
-      p5.pop();
-    };
-
-    p5.mouseClicked = () => {
-      if (new Date().getTime() - mouseClickedLastCall > 1) {
-        positions.push({ x: p5.mouseX, y: p5.mouseY });
-      }
-
-      return false;
     };
   }
+
+  setInterval(() => {
+    fingers.push(
+      new NetworkedFinger(
+        fingers.length,
+        fingers[fingers.length - 1].id,
+        true,
+        { x: 0, y: 0 },
+        0,
+        "index",
+        skin
+      )
+    );
+  }, 5000);
+
   return <ReactP5Wrapper sketch={sketch} />;
 };
 
-export default fractalFingers;
+export default sentakubasami;

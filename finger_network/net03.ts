@@ -27,7 +27,6 @@ export const net03 = () => {
 };
 
 const extendFinger = (parentId: number, depth: number) => {
-  console.log(depth);
   if (depth < 5) {
     const angleArray = [];
     const c = Math.ceil(depth / 2);

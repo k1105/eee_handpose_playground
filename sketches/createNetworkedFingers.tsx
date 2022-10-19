@@ -6,6 +6,9 @@ import { isClose } from "../lib/isClose";
 import { skin01 } from "../finger_skin/skin01";
 import { drawNetworkedFingers } from "../lib/drawNetworkedFingers";
 import { updatePoses } from "../lib/updatePoses";
+import { composeTreeNode } from "../lib/composeTreeDiagram";
+import { drawTreeDiagram } from "../lib/drawTreeDiagram";
+import { Hand } from "../lib/HandClass";
 
 type Props = {
   predictionsRef: MutableRefObject<null | handPoseDetection.Hand[]>;
@@ -22,11 +25,12 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
   const fingers: NetworkedFinger[] = [
     new NetworkedFinger(0, null, false, { x: 500, y: 500 }, 0, "thumb", skin),
   ];
+  let treeNodes = composeTreeNode(fingers);
+  const hand = new Hand({ x: 1300, y: 300 });
 
   function sketch(p5: P5CanvasInstance) {
     p5.setup = () => {
       p5.createCanvas(window.innerWidth, window.innerHeight);
-
       p5.stroke(220);
       p5.strokeWeight(3);
     };
@@ -34,6 +38,7 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
     p5.draw = () => {
       let hands = [];
       p5.background(57, 127, 173);
+      drawTreeDiagram({ p5, treeNodes });
       p5.push();
       if (predictionsRef.current) {
         try {
@@ -45,6 +50,12 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
           });
 
           const key = hands[0];
+          p5.push();
+          p5.noStroke();
+          p5.fill(255);
+          p5.text("Handpose", 1190, 200);
+          p5.pop();
+          hand.draw(p5, key);
           drawNetworkedFingers({ p5: p5, pose: key, networkedfinger: fingers });
         } catch (e) {}
       }
@@ -64,6 +75,7 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
               skin
             )
           );
+          treeNodes = composeTreeNode(fingers);
         }
       }
 
