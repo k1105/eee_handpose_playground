@@ -82,7 +82,11 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
       return false;
     };
   }
-  return <ReactP5Wrapper sketch={sketch} />;
+  return (
+    <div>
+      <ReactP5Wrapper sketch={sketch} />
+    </div>
+  );
 };
 
 export default CreateNetworkedFingers;

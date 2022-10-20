@@ -1,11 +1,11 @@
 import { NetworkedFinger } from "../lib/NetworkedFingerClass";
 import { skin01 } from "../finger_skin/skin01";
+import { Skin } from "../lib/SkinClass";
 
-export const skin = skin01();
 export const finger_names = ["thumb", "index", "middle", "ring", "pinky"];
 export const data: NetworkedFinger[] = [];
 
-export const net03 = () => {
+export const net03 = (skin: Skin) => {
   for (let i = 0; i < 5; i++) {
     const id = data.length;
     data.push(
@@ -20,13 +20,13 @@ export const net03 = () => {
       )
     );
 
-    extendFinger(id, 1);
+    extendFinger(id, 1, skin);
   }
 
   return data;
 };
 
-const extendFinger = (parentId: number, depth: number) => {
+const extendFinger = (parentId: number, depth: number, skin: Skin) => {
   if (depth < 5) {
     const angleArray = [];
     const c = Math.ceil(depth / 2);
@@ -51,7 +51,7 @@ const extendFinger = (parentId: number, depth: number) => {
           skin
         )
       );
-      extendFinger(id, depth + 1);
+      extendFinger(id, depth + 1, skin);
     }
   }
 };

@@ -1,18 +1,13 @@
 import { Skin } from "../lib/SkinClass";
 
-export const skin01 = () => {
+export const ellipseSkin = () => {
   return new Skin({
     style: (p5, key, start, end) => {
-      p5.stroke(255);
-      p5.strokeWeight(3);
-      for (let i = start; i < end; i++) {
-        p5.line(
-          3 * (key[i].x - key[start].x),
-          3 * (key[i].y - key[start].y),
-          3 * (key[i + 1].x - key[start].x),
-          3 * (key[i + 1].y - key[start].y)
-        );
-      }
+      p5.push();
+      p5.noStroke();
+      p5.ellipse(key[start].x, key[start].y, 5);
+      p5.ellipse(key[end].x, key[end].y, 5);
+      p5.pop();
     },
     getVectorAngle: (key, start, end) => {
       return (
