@@ -1,5 +1,4 @@
 import { NetworkedFinger } from "../lib/NetworkedFingerClass";
-import { skin01 } from "../finger_skin/skin01";
 import { Skin } from "../lib/SkinClass";
 
 export const finger_names = ["thumb", "index", "middle", "ring", "pinky"];

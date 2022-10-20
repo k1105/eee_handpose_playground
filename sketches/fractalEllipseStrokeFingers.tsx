@@ -5,7 +5,8 @@ import { MutableRefObject } from "react";
 import { net03 } from "../finger_network/net03";
 import { drawNetworkedFingers } from "../lib/drawNetworkedFingers";
 import { updatePoses } from "../lib/updatePoses";
-import { ellipseSkin } from "../finger_skin/ellipseSkin";
+import { composeTreeNode } from "../lib/composeTreeDiagram";
+import { ellipseStrokeSkin } from "../finger_skin/ellipseStrokeSkin";
 
 type Props = {
   predictionsRef: MutableRefObject<null | handPoseDetection.Hand[]>;
@@ -19,8 +20,9 @@ const fractalEllipseFingers = ({ predictionsRef }: Props): JSX.Element => {
   ] = [[], []];
   let hands = [];
   const positions = [];
-  const skin = ellipseSkin();
+  const skin = ellipseStrokeSkin();
   const data: NetworkedFinger[] = net03(skin);
+  const treeNodes = composeTreeNode(data);
 
   function sketch(p5: P5CanvasInstance) {
     p5.setup = () => {
