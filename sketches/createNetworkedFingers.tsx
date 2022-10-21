@@ -3,7 +3,7 @@ import { NetworkedFinger } from "../lib/NetworkedFingerClass";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import { MutableRefObject } from "react";
 import { isClose } from "../lib/isClose";
-import { skin01 } from "../finger_skin/skin01";
+import { strokeSkin } from "../finger_skin/strokeSkin";
 import { drawNetworkedFingers } from "../lib/drawNetworkedFingers";
 import { updatePoses } from "../lib/updatePoses";
 import { composeTreeNode } from "../lib/composeTreeDiagram";
@@ -21,7 +21,7 @@ const CreateNetworkedFingers = ({ predictionsRef }: Props): JSX.Element => {
     handPoseDetection.Keypoint[][],
     handPoseDetection.Keypoint[][]
   ] = [[], []];
-  const skin = skin01();
+  const skin = strokeSkin({ r: 255, g: 255, b: 255 }, 10, 3);
   const fingers: NetworkedFinger[] = [
     new NetworkedFinger(0, null, false, { x: 500, y: 500 }, 0, "thumb", skin),
   ];

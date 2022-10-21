@@ -2,7 +2,7 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { NetworkedFinger } from "../lib/NetworkedFingerClass";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import { MutableRefObject } from "react";
-import { skin01 } from "../finger_skin/skin01";
+import { strokeSkin } from "../finger_skin/strokeSkin";
 import { drawNetworkedFingers } from "../lib/drawNetworkedFingers";
 import { updatePoses } from "../lib/updatePoses";
 
@@ -15,7 +15,7 @@ const indexFingerExtention = ({ predictionsRef }: Props): JSX.Element => {
     handPoseDetection.Keypoint[][],
     handPoseDetection.Keypoint[][]
   ] = [[], []];
-  const skin = skin01();
+  const skin = strokeSkin();
   const fingers: NetworkedFinger[] = [
     new NetworkedFinger(
       0,

@@ -31,7 +31,7 @@ const fractalEllipseFingers = ({ predictionsRef }: Props): JSX.Element => {
     };
 
     p5.draw = () => {
-      p5.background(100);
+      p5.background(50);
       p5.push();
       if (predictionsRef.current) {
         try {
