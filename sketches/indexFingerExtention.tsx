@@ -15,7 +15,7 @@ const indexFingerExtention = ({ predictionsRef }: Props): JSX.Element => {
     handPoseDetection.Keypoint[][],
     handPoseDetection.Keypoint[][]
   ] = [[], []];
-  const skin = strokeSkin();
+  const skin = strokeSkin({ r: 255, g: 255, b: 255 }, 10, 3);
   const fingers: NetworkedFinger[] = [
     new NetworkedFinger(
       0,
