@@ -14,7 +14,7 @@ export const updatePoses = ({
   [handPoseDetection.Keypoint[][], handPoseDetection.Keypoint[][]],
   handPoseDetection.Keypoint[][]
 ] => {
-  const hands = [];
+  const hands: handPoseDetection.Keypoint[][] = [];
   for (let index = 0; index < predictionsRef.current.length; index++) {
     //index===0: 最初に認識された手, index===1: 次に認識された手
     poses[index].push(predictionsRef.current[index].keypoints);
